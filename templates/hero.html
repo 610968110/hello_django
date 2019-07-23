@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>英雄</title>
+</head>
+<body>
+<ul>
+    英雄如下：
+    {% for h in hero %}
+        <li>{{ h.name }} -> {{ h.skill }}</li>
+    {% empty %}
+        没有英雄
+    {% endfor %}
+</ul>
+
+
+</body>
+</html>
