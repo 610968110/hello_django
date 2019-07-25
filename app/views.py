@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect  # 重定向
 from django.template import loader, RequestContext
 from app.models import *
@@ -28,6 +28,7 @@ def index(request):
 
 def index1(request):
     """视图"""
+    print("~~~~~~~~ -> %s" % request)
     return HttpResponse('123')
 
 
@@ -51,5 +52,5 @@ def create_book(request):
     book = Book()
     book.name = '三国演艺'
     book.save()
-
-    return HttpResponseRedirect('/book')  # 重定向
+    # return HttpResponseRedirect('/book')  # 重定向
+    return redirect('/book')
