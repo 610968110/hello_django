@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect  # 重定向
 from django.template import loader, RequestContext
 from app.models import *
 
@@ -45,3 +45,11 @@ def show_hero(request, book_id):
     book = Book.objects.get(id=book_id)
     hero = book.hero_set.all()
     return render(request, 'hero.html', {'hero': hero})
+
+
+def create_book(request):
+    book = Book()
+    book.name = '三国演艺'
+    book.save()
+
+    return HttpResponseRedirect('/book')  # 重定向
