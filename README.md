@@ -180,3 +180,54 @@ all, filter, exclude, order_by调用这些函数会产生一个查询集，Query
 |b[0:1].get()	|如果b[0:1].get()不存在，会抛出DoesNotExist异常。|
 
 exists:判断一个查询集中是否有数据。True False
+
+
+## 10、模型关系
+
+### 10.1 一对多关系
+例：图书类-英雄类       
+models.ForeignKey() 定义在多的类中。        
+
+### 10.2 多对多关系
+例：新闻类-新闻类型类 体育新闻 国际新闻       
+models.ManyToManyField() 定义在哪个类中都可以。        
+
+### 10.3 一对一关系
+例：员工基本信息类-员工详细信息类. 员工工号     
+models.OneToOneField 定义在哪个类中都可以。     
+
+
+## 11、mysql关联查询（一对多）
+
+### 11.1 查询和对象关联的数据
+在一对多关系中，一对应的类我们把它叫做一类，多对应的那个类我们把它叫做多类，我们把多类中定义的建立关联的类属性叫做关联属性。      
+
+例：查询id为1的图书关联的英雄的信息。        
+	b=BookInfo.objects.get(id=1)        
+	b.heroinfo_set.all()        
+通过模型类查询：        
+	HeroInfo.objects.filter(hbook__id=1)        
+	
+例：查询id为1的英雄关联的图书信息。     
+	h = HeroInfo.objects.get(id=1)      
+	h.hbook     
+通过模型类查询：        
+	BookInfo.objects.filter(heroinfo__id=1)     
+
+### 11.2 通过模型类实现关联查询
+
+通过多类的条件查询一类的数据：     
+	一类名.objects.filter(多类名小写__多类属性名__条件名)       
+通过一类的条件查询多类的数据：     
+	多类名.objects.filter(关联属性__一类属性名__条件名)  
+
+例：查询图书信息，要求图书关联的英雄的描述包含'八'。     
+BookInfo.objects.filter(heroinfo__hcomment__contains='八')       
+
+例：查询图书信息，要求图书中的英雄的id大于3.        
+BookInfo.objects.filter(heroinfo__id__gt=3)     
+
+例：查询书名为“天龙八部”的所有英雄。
+HeroInfo.objects.filter(hbook__btitle='天龙八部')    
+   
+      
