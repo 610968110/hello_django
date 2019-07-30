@@ -231,3 +231,37 @@ BookInfo.objects.filter(heroinfo__id__gt=3)
 HeroInfo.objects.filter(hbook__btitle='天龙八部')    
    
       
+## 12 管理器
+
+BookInfo.objects.all()->objects是一个什么东西呢？
+答：objects是Django帮我自动生成的管理器对象，通过这个管理器可以实现对数据的查询。
+
+objects是models.Manger类的一个对象。自定义管理器之后Django不再帮我们生成默认的objects管理器。
+
+### 14.1 自定义模型管理器类
+
+1)	自定义一个管理器类，这个类继承models.Manger类。
+
+2)	再在具体的模型类里定义一个自定义管理器类的对象。
+
+### 14.2 自定义管理器类的应用场景
+
+1）	改变查询的结果集。
+
+比如调用BookInfo.books.all()返回的是没有删除的图书的数据。
+
+2）	添加额外的方法。
+
+管理器类中定义一个方法帮我们操作模型类对应的数据表。
+
+使用self.model()就可以创建一个跟自定义管理器对应的模型类对象。
+
+3）	Django管理器中为我们自动生成了创建实例的函数
+
+Book.objects.create(name = 'name')
+
+4）	Django管理器中为我们提供了获取模型类的函数  
+
+model_class = self.model  ,  book = model_class()  这样防止类名发生变化
+ 
+BookInfo.objects.model 
