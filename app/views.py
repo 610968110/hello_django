@@ -68,16 +68,35 @@ def login_check(request):
     cookie = request.COOKIES
     path = request.path  # 请求页面的完成路径，不包括域名和参数
 
-    userName = "null"
-    userPwd = ""
-    if request.method == 'POST':
-        userName = request.POST.get('userName')
-        userPwd = request.POST.get('userPwd')
-    elif request.method == 'GET':
-        userName = request.GET.get('userName')
-        userPwd = request.GET.get('userPwd')
+    user_name = "null"
+    user_pwd = ""
 
-    if userName == userPwd:
-        return render(request, 'hero.html')
-    else:
+    if request.method == 'POST':
+        user_name = request.POST.get('user_name')
+        user_pwd = request.POST.get('user_pwd')
+    elif request.method == 'GET':
+        user_name = request.GET.get('user_name')
+        user_pwd = request.GET.get('user_pwd')
+
+    if user_name == user_pwd:
+
+        response = HttpResponse("设置cookie")
+        response.set_cookie('user_name', user_name, max_age=60)  # 60秒过期  expires是具体时间需要用datetime去实现
         return JsonResponse({'code': 200, 'message': "login success"})
+    else:
+        return JsonResponse({'code': 500, 'message': "login err"})
+
+
+def cookie(request):
+    cookie = request.COOKIES
+    user_name = ""
+    if 'user_name' in cookie:
+        user_name = cookie.get('user_name')
+
+
+def session(request):
+    request.session['user_name'] = 'root'  # 默认是14天
+    user_name = request.session['user_name']
+    del request.session['user_name']
+    request.session.clear()
+    request.session.set_expiry(60)  # 单位：秒，设置sessionId的过期时间,0关闭浏览器就失效

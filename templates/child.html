@@ -1,0 +1,15 @@
+{% extends 'parent.html' %}
+
+{% block content1 %}
+    父模板中的内容
+    {{ block.super }}
+    <h1>子模板中的内容</h1>
+
+    {# 关闭转义1 #}
+    {{ content|safe|default:"null" }}
+
+    {% autoescape off %}
+        关闭转义2，这里写模板代码
+    {% endautoescape %}
+
+{% endblock %}

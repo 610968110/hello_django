@@ -47,6 +47,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'app.middleware.BlockedIpsMiddleWare',  # 注册中间件类
 ]
 
 ROOT_URLCONF = 'hello_django.urls'
@@ -64,6 +65,9 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'libraries': {
+                'my_template': 'app.templatetags.my_template',
+            }
         },
     },
 ]
@@ -103,7 +107,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-     },
+    },
 ]
 
 # Internationalization
@@ -124,3 +128,5 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]  # 设置静态资源路径  js  css  images
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static/media')  # 设置文件上传的路径

@@ -101,7 +101,7 @@ BookInfo.objects.filter(bpub_date__gt=date(1980,1,1))
 ### 6.3 exclude方法示例：
 例：查询id不为3的图书信息。     
 BookInfo.objects.exclude(id=3)   
-   
+
 ### 6.4 order_by方法示例：
 作用：进行查询结果进行排序。      
 例：查询所有图书的信息，按照id从小到大进行排序。       
@@ -154,7 +154,7 @@ BookInfo.objects.aggregate(Sum('bread'))
 
 ### 8.2 count函数 返回值是一个数字
 作用：统计满足条件数据的数目。   
-  
+
 例：统计所有图书的数目。        
 BookInfo.objects.all().count()      
 BookInfo.objects.count()        
@@ -229,8 +229,8 @@ BookInfo.objects.filter(heroinfo__id__gt=3)
 
 例：查询书名为“天龙八部”的所有英雄。
 HeroInfo.objects.filter(hbook__btitle='天龙八部')    
-   
-      
+
+
 ## 12 管理器
 
 BookInfo.objects.all()->objects是一个什么东西呢？
@@ -263,5 +263,59 @@ Book.objects.create(name = 'name')
 4）	Django管理器中为我们提供了获取模型类的函数  
 
 model_class = self.model  ,  book = model_class()  这样防止类名发生变化
- 
+
 BookInfo.objects.model 
+
+## 13、上传图片上示例
+
+```
+from django.conf import setting
+
+pic_obj = request.FILE['pic']  # pic是html中表单的name字段,且表单拥有enctype="multipart/from-data"
+pic_content = pic_obj.chunks()  # 图片内容
+file_name = pic_obj.name  # 图片的名字
+file_path = "%s/app/%s" % (setting.MEDIA_ROOT, file_name)
+with open(file_path, 'wb') as file
+    for content in pic_content:
+        file.write(content)
+```
+
+## 14、分页示例
+查询出所有省级地区的信息，显示在页面上。
+AeroInfo.objects.filter(aParent__isnull = True)
+- 查询出所有省级地区的信息。
+- 按每页显示10条信息进行分页，默认显示第一页的信息，下面并显示出页码。
+- 点击i页链接的时候，就显示第i页的省级地区信息。
+```
+from django.core.paginator import Paginator
+paginator = Paginator(areas, 10) #按每页10条数据进行分页
+Paginator类对象的属性:
+```
+
+|属性名|	说明|
+|---|---|
+|num_pages|	返回分页之后的总页数|
+|page_range	|返回分页后页码的列表|
+
+Paginator类对象的方法:
+
+|方法名	|说明|
+|---|---|
+|page(self, number)	|返回第number页的Page类实例对象|
+
+Page类对象的属性：
+
+|属性名|	说明|
+|---|---|
+|number	|返回当前页的页码|
+|object_list|	返回包含当前页的数据的查询集|
+|paginator|	返回对应的Paginator类对象|
+
+Page类对象的方法：
+
+|属性名|	说明|
+|---|---|
+|has_previous|	判断当前页是否有前一页|
+|has_next	|判断当前页是否有下一页|
+|previous_page_number	|返回前一页的页码|
+|next_page_number	|返回下一页的页码|

@@ -1,14 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
+{#加载自定义模板#}
+{% load my_template %}
 <head>
     <meta charset="UTF-8">
     <title>书籍</title>
 </head>
 <body>
 <ul>
-    图书如下：
+    {% if 1 == 1 and 2 == 2 %}
+        图书如下：
+    {% else %}
+    {% endif %}
+
     {% for book in books %}
-        <li><a href="book/{{ book.id }}">{{ book }}</a></li>
+        {# 每两个变颜色 #}
+        {% if book.id|mod:2 %}
+            <li style="background-color: azure"><a href="book/{{ book.id }}">{{ forloop.counter }}
+                -> {{ book.name }}
+                长度：{{ book.name|length }}</a></li>
+        {% else %}
+            <li style="background-color: aliceblue"><a
+                    href="book/{{ book.id }}">{{ forloop.counter }} -> {{ book.name }}
+                长度：{{ book.name|length }}</a></li>
+        {% endif %}
     {% empty %}
         没有图书
     {% endfor %}
